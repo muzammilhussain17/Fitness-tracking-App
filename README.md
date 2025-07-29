@@ -1,1 +1,1 @@
-#Fitness Tracking App follows Microservices Archtecture
+#Fitness Tracking App follows Microservices Architecture
