@@ -1,0 +1,96 @@
+spring:
+  application:
+    name: ApiGateways
+
+  cloud:
+    gateway:
+      # Global filters
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 100
+            redis-rate-limiter.burstCapacity: 200
+            redis-rate-limiter.requestedTokens: 1
+      
+      # Service routes
+      routes:
+        - id: user-service
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userServiceCircuitBreaker
+                fallbackUri: forward:/fallback/user
+
+        - id: activity-service
+          uri: lb://ACTIVITYSERVICE
+          predicates:
+            - Path=/api/v1/activities/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: activityServiceCircuitBreaker
+                fallbackUri: forward:/fallback/activity
+
+        - id: ai-service
+          uri: lb://AISERVICE
+          predicates:
+            - Path=/api/recommendation/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: aiServiceCircuitBreaker
+                fallbackUri: forward:/fallback/ai
+
+# Server configuration
+server:
+  port: 8080
+
+# Eureka configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Resilience4j Circuit Breaker configuration
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+    instances:
+      userServiceCircuitBreaker:
+        baseConfig: default
+      activityServiceCircuitBreaker:
+        baseConfig: default
+      aiServiceCircuitBreaker:
+        baseConfig: default
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 10s

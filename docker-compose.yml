@@ -1,0 +1,177 @@
+version: '3.8'
+
+services:
+  # ===========================================
+  # Config Server (Start First)
+  # ===========================================
+  config-server:
+    build:
+      context: ./ConfigServer/ConfigServer
+      dockerfile: Dockerfile
+    container_name: config-server
+    ports:
+      - "${CONFIG_SERVER_PORT:-8888}:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ===========================================
+  # Eureka Discovery Server
+  # ===========================================
+  eureka-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "${EUREKA_SERVER_PORT:-8761}:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    depends_on:
+      config-server:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ===========================================
+  # API Gateway
+  # ===========================================
+  api-gateway:
+    build:
+      context: ./ApiGateways
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "${API_GATEWAY_PORT:-8080}:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  # ===========================================
+  # User Service
+  # ===========================================
+  user-service:
+    build:
+      context: ./userservice
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "${USER_SERVICE_PORT:-8081}:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-userservice}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-userservice}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-userservice123}
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  # ===========================================
+  # AI Service
+  # ===========================================
+  ai-service:
+    build:
+      context: ./aiservice
+      dockerfile: Dockerfile
+    container_name: ai-service
+    ports:
+      - "${AI_SERVICE_PORT:-8082}:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATA_MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/${MONGO_DATABASE:-microservices}?authSource=admin
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER:-guest}
+      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS:-guest}
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  # ===========================================
+  # Activity Service
+  # ===========================================
+  activity-service:
+    build:
+      context: ./activityService
+      dockerfile: Dockerfile
+    container_name: activity-service
+    ports:
+      - "${ACTIVITY_SERVICE_PORT:-8083}:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATA_MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-admin123}@mongodb:27017/${MONGO_DATABASE:-microservices}?authSource=admin
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER:-guest}
+      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS:-guest}
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+networks:
+  microservices-network:
+    driver: bridge

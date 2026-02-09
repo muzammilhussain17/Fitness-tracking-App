@@ -1,0 +1,211 @@
+# Default values for microservices-platform
+# This is a YAML-formatted file.
+
+# ===========================================
+# Global Configuration
+# ===========================================
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+# ===========================================
+# Config Server
+# ===========================================
+configServer:
+  enabled: true
+  name: config-server
+  replicaCount: 1
+  image:
+    repository: microservices/config-server
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8888
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# ===========================================
+# Eureka Server
+# ===========================================
+eurekaServer:
+  enabled: true
+  name: eureka-server
+  replicaCount: 1
+  image:
+    repository: microservices/eureka-server
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8761
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# ===========================================
+# API Gateway
+# ===========================================
+apiGateway:
+  enabled: true
+  name: api-gateway
+  replicaCount: 2
+  image:
+    repository: microservices/api-gateway
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: LoadBalancer
+    port: 8080
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: api.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+
+# ===========================================
+# User Service
+# ===========================================
+userService:
+  enabled: true
+  name: user-service
+  replicaCount: 2
+  image:
+    repository: microservices/user-service
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8081
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# ===========================================
+# AI Service
+# ===========================================
+aiService:
+  enabled: true
+  name: ai-service
+  replicaCount: 2
+  image:
+    repository: microservices/ai-service
+    tag: "0.9.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8082
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+
+# ===========================================
+# Activity Service
+# ===========================================
+activityService:
+  enabled: true
+  name: activity-service
+  replicaCount: 2
+  image:
+    repository: microservices/activity-service
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8083
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# ===========================================
+# Database - MySQL
+# ===========================================
+mysql:
+  enabled: true
+  auth:
+    rootPassword: rootpassword
+    database: userservice
+    username: userservice
+    password: userservice123
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+# ===========================================
+# Database - MongoDB
+# ===========================================
+mongodb:
+  enabled: true
+  auth:
+    enabled: true
+    rootUser: admin
+    rootPassword: admin123
+  persistence:
+    enabled: true
+    size: 10Gi
+
+# ===========================================
+# Message Broker - RabbitMQ
+# ===========================================
+rabbitmq:
+  enabled: true
+  auth:
+    username: guest
+    password: guest
+  persistence:
+    enabled: true
+    size: 5Gi
+
+# ===========================================
+# Cache - Redis
+# ===========================================
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: redis123
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+
+# ===========================================
+# Environment Variables
+# ===========================================
+env:
+  jwtSecret: "your_jwt_secret_key_here"
+  jwtExpirationMs: "86400000"
+  springProfilesActive: "kubernetes"

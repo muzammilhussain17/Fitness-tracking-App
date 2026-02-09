@@ -1,0 +1,19 @@
+apiVersion: v2
+name: microservices-platform
+description: A Helm chart for deploying the Enterprise Microservices Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+keywords:
+  - microservices
+  - spring-boot
+  - kubernetes
+  - eureka
+  - api-gateway
+
+maintainers:
+  - name: Your Team
+    email: team@yourcompany.com
+
+dependencies: []

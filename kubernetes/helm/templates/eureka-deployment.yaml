@@ -1,0 +1,55 @@
+{{- if .Values.eurekaServer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.eurekaServer.name }}
+  labels:
+    app: {{ .Values.eurekaServer.name }}
+spec:
+  replicas: {{ .Values.eurekaServer.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.eurekaServer.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.eurekaServer.name }}
+    spec:
+      containers:
+        - name: {{ .Values.eurekaServer.name }}
+          image: "{{ .Values.eurekaServer.image.repository }}:{{ .Values.eurekaServer.image.tag }}"
+          imagePullPolicy: {{ .Values.eurekaServer.image.pullPolicy }}
+          ports:
+            - containerPort: 8761
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.env.springProfilesActive }}
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: "http://{{ .Values.configServer.name }}:{{ .Values.configServer.service.port }}"
+          resources:
+            {{- toYaml .Values.eurekaServer.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.eurekaServer.name }}
+spec:
+  type: {{ .Values.eurekaServer.service.type }}
+  ports:
+    - port: {{ .Values.eurekaServer.service.port }}
+      targetPort: 8761
+  selector:
+    app: {{ .Values.eurekaServer.name }}
+{{- end }}
