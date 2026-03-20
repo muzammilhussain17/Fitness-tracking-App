@@ -1,0 +1,107 @@
+.profile-page { min-height: 100vh; }
+
+.profile-layout {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 7rem 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  opacity: 0;
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #050511;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2), 0 0 30px rgba(0, 242, 254, 0.15);
+}
+
+.profile-names h1 { font-size: clamp(1.8rem, 3vw, 2.2rem); }
+.profile-role { color: var(--text-secondary); margin-top: 0.3rem; font-size: 0.95rem; }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 700px) {
+  .profile-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.profile-info-card h2, .profile-security-card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+}
+
+.profile-fields { display: flex; flex-direction: column; gap: 1.25rem; }
+.profile-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pf-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+.pf-label { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+.pf-value { display: block; font-size: 0.95rem; color: var(--text-primary); font-weight: 500; }
+.pf-mono { font-family: monospace; font-size: 0.85rem; color: var(--text-secondary); }
+
+/* Security Card */
+.security-items { display: flex; flex-direction: column; gap: 1rem; }
+.security-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: var(--glass-bg);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--glass-border);
+}
+
+.si-label { display: block; font-weight: 500; font-size: 0.9rem; }
+.si-sub { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+.si-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 99px;
+  letter-spacing: 0.06em;
+}
+
+.si-badge.active { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.si-badge.connected { background: rgba(0, 242, 254, 0.12); color: var(--accent-cyan); }
+.si-badge.role { background: rgba(127, 0, 255, 0.15); color: #e100ff; }

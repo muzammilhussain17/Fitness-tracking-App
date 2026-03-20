@@ -1,0 +1,112 @@
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.premium-input {
+  width: 100%;
+  padding: 1.1rem 1rem 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.premium-input.has-icon {
+  padding-left: 2.8rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  transition: color var(--transition-fast);
+  pointer-events: none;
+}
+
+.input-label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all var(--transition-fast);
+  background: transparent;
+  z-index: 1;
+}
+
+.input-label.with-icon {
+  left: 2.8rem;
+}
+
+/* When focused or has value, float the label */
+.input-wrapper.focused .input-label,
+.input-wrapper.has-value .input-label {
+  top: 0.55rem;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  transform: none;
+  left: 1rem;
+}
+
+.input-wrapper.focused .input-label.with-icon,
+.input-wrapper.has-value .input-label.with-icon {
+  left: 1rem;
+}
+
+.input-wrapper.focused .input-icon {
+  color: var(--accent-cyan);
+}
+
+/* Gradient border */
+.input-border-gradient {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gradient-primary);
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  transition: width var(--transition-normal);
+}
+
+.input-wrapper.focused .input-border-gradient {
+  width: 100%;
+}
+
+.input-wrapper.focused .premium-input {
+  border-color: rgba(0, 242, 254, 0.3);
+  background: rgba(0, 242, 254, 0.03);
+}
+
+.input-wrapper.has-error .premium-input {
+  border-color: #ef4444;
+}
+
+.input-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #ef4444;
+}
+
+/* Override autofill styles */
+.premium-input:-webkit-autofill,
+.premium-input:-webkit-autofill:hover,
+.premium-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px rgba(5, 5, 17, 0.9) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
