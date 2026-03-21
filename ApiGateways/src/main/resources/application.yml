@@ -4,13 +4,13 @@ spring:
 
   cloud:
     gateway:
-      # Global filters
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 100
-            redis-rate-limiter.burstCapacity: 200
-            redis-rate-limiter.requestedTokens: 1
+      # Global filters (disabled Redis rate limiter to prevent connection errors)
+      # default-filters:
+      #  - name: RequestRateLimiter
+      #    args:
+      #      redis-rate-limiter.replenishRate: 100
+      #      redis-rate-limiter.burstCapacity: 200
+      #      redis-rate-limiter.requestedTokens: 1
       
       # Service routes
       routes:

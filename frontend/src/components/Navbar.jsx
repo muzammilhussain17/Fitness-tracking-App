@@ -40,7 +40,7 @@ const Navbar = () => {
           <div className="logo-icon">
             <Zap size={20} strokeWidth={2.5} />
           </div>
-          <span>FitTrack<span className="logo-accent">AI</span></span>
+          <span>Neura<span className="logo-accent">Fit</span></span>
         </Link>
 
         {/* Desktop Links */}

@@ -1,0 +1,155 @@
+{
+  "info": {
+    "name": "Fitness Tracking App",
+    "description": "API collection for Fitness Tracking Microservices. Requests are routed through the API Gateway on port 8080.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Service",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/Register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "Register"]
+            }
+          }
+        },
+        {
+          "name": "Validate User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/{{userId}}/validate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "{{userId}}", "validate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Activity Service",
+      "item": [
+        {
+          "name": "Get All Activities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activities",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activities"]
+            }
+          }
+        },
+        {
+          "name": "Get Activity By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activities/{{activityId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activities", "{{activityId}}"]
+            }
+          }
+        },
+        {
+          "name": "Track Activity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"activityType\": \"RUNNING\",\n  \"duration\": 30,\n  \"caloriesBurned\": 300,\n  \"startTime\": \"2023-10-01T10:00:00\",\n  \"additionalMetrics\": {\n    \"distance\": 5.0,\n    \"heartRate\": 145\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/activities",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "activities"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recommendation Service",
+      "item": [
+        {
+          "name": "Get User Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/recommendation/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recommendation", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Activity Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/recommendation/activity/{{activityId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recommendation", "activity", "{{activityId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "activityId",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}

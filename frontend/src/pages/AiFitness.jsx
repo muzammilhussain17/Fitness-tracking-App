@@ -230,7 +230,7 @@ const AiFitness = () => {
             <div className="report-header-left">
               <div className="report-badge"><Sparkles size={14} /> AI Analysis Complete</div>
               <h1>Your <span className="text-gradient">Performance Report</span></h1>
-              <p>Generated in real-time by the FitTrackAI engine</p>
+              <p>Generated in real-time by the NeuraFit AI engine</p>
             </div>
             <div className="report-header-right">
               <div className="score-ring">

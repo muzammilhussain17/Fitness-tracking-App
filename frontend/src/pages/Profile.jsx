@@ -32,7 +32,7 @@ const Profile = () => {
             <h1>
               {loading ? 'Loading...' : `${profile?.firstName || ''} ${profile?.lastName || ''}`}
             </h1>
-            <p className="profile-role">Elite Athlete · FitTrackAI Member</p>
+            <p className="profile-role">Elite Athlete · NeuraFit Member</p>
           </div>
         </div>
 

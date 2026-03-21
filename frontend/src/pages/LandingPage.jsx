@@ -144,7 +144,7 @@ const LandingPage = () => {
               {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
             </div>
             <h2>Ready to transform your fitness?</h2>
-            <p>Join thousands of elite athletes and fitness enthusiasts already using FitTrackAI.</p>
+            <p>Join thousands of elite athletes and fitness enthusiasts already using NeuraFit.</p>
             <Link to="/register">
               <AnimatedButton variant="primary" icon={<ArrowRight size={18} />}>
                 Get Started — It's Free
@@ -159,9 +159,9 @@ const LandingPage = () => {
         <div className="container footer-content">
           <div className="footer-logo">
             <Zap size={18} />
-            <span>FitTrack<span className="logo-accent">AI</span></span>
+            <span>Neura<span className="logo-accent">Fit</span></span>
           </div>
-          <p className="footer-copy">© 2026 FitTrackAI. Built on enterprise microservices.</p>
+          <p className="footer-copy">© 2026 NeuraFit. Built on enterprise microservices.</p>
         </div>
       </footer>
     </div>

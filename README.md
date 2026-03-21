@@ -59,7 +59,7 @@ This platform addresses the growing need for:
 - **Database**: PostgreSQL 13+ (or compatible RDBMS)
 - **Message Broker**: RabbitMQ 3.9+ or Apache Kafka
 - **Caching**: Redis 6.0+
-- **Container Orchestration**: Kubernetes (for production deployment)
+- **Container Orchestration**: Docker Compose (for production deployment)
 
 ### Development Tools
 - **IDE**: IntelliJ IDEA (recommended) or VS Code
@@ -126,10 +126,10 @@ docker-compose -f docker-compose.yml -f docker-compose.infrastructure.yml up --b
 ```
 
 ### Production Deployment
-For production environments, we recommend using Kubernetes with the provided Helm charts:
+For production environments, we recommend using Docker Compose with overridden environment variables optimized for production.
 ```bash
-# Deploy to Kubernetes
-helm install microservices ./kubernetes/helm
+# Deploy with Docker Compose
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
 ## 🔍 System Architecture
@@ -285,7 +285,7 @@ Please report any security vulnerabilities to security@yourcompany.com
 - **Database**: PostgreSQL 14 with Flyway migrations
 - **Caching**: Redis 7.0
 - **Message Broker**: RabbitMQ 3.11
-- **Containerization**: Docker 20.10+, Kubernetes 1.24+
+- **Containerization**: Docker 20.10+
 - **CI/CD**: GitHub Actions, ArgoCD
 
 ### Monitoring & Observability

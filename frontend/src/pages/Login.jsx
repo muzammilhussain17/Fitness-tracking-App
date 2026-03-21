@@ -75,7 +75,7 @@ const Login = () => {
         <div className="auth-header">
           <Link to="/" className="auth-logo">
             <div className="logo-icon"><Zap size={18} strokeWidth={2.5} /></div>
-            <span>FitTrack<span className="logo-accent">AI</span></span>
+            <span>Neura<span className="logo-accent">Fit</span></span>
           </Link>
           <h2>Welcome Back</h2>
           <p>Sign in to continue your fitness journey</p>

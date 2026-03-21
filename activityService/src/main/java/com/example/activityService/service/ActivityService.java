@@ -93,8 +93,8 @@ public class ActivityService {
 
     }
 
-    public List<ActivityResponse> getAllActivities() {
-        List<Activity> activities = activityRepository.findAll();
+    public List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity> activities = activityRepository.findByUserId(userId);
         return activities.stream()
                 .map(this::mapToResponse)
                 .toList();

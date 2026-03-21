@@ -42,10 +42,10 @@ public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityReque
         return ResponseEntity.ok(activity);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ActivityResponse>> getAllActivities() {
-        // This method retrieves all activities for all users
-        List<ActivityResponse> activities = activityService.getAllActivities();
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ActivityResponse>> getUserActivities(@PathVariable String userId) {
+        // Retrieves activities for a specific user
+        List<ActivityResponse> activities = activityService.getUserActivities(userId);
         return ResponseEntity.ok(activities);
     }
 }
